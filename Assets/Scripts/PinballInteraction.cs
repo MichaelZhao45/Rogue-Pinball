@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PinballInteraction : MonoBehaviour
 {
@@ -6,13 +7,22 @@ public class PinballInteraction : MonoBehaviour
     public GameObject pinballCamera;
 
     private bool playerNearby = false;
+    private bool inPinballMode = false;
 
     void Update()
     {
-        if (playerNearby && Input.GetKeyDown(KeyCode.E))
+        if (playerNearby && !inPinballMode && Keyboard.current.eKey.wasPressedThisFrame)
         {
             fpsCamera.SetActive(false);
             pinballCamera.SetActive(true);
+            inPinballMode = true;
+        }
+
+        if (inPinballMode && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            pinballCamera.SetActive(false);
+            fpsCamera.SetActive(true);
+            inPinballMode = false;
         }
     }
 
