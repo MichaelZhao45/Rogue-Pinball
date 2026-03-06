@@ -1,4 +1,4 @@
-using System.Threading;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +15,8 @@ public class PinballController : MonoBehaviour
     public InputActionReference RFlipper;
     public InputActionReference Plunger;
 
+    public Rigidbody plungerRb;
+
     private JointSpring jointSpringReleased = new();
     private JointSpring jointSpringPressed = new();
 
@@ -28,7 +30,7 @@ public class PinballController : MonoBehaviour
 
         LFlipper.action.performed += LeftFlipper;
         RFlipper.action.performed += RightFlipper;
-        Plunger.action.performed += Launch;
+        Plunger.action.performed += PrepareLaunch;
 
         LFlipper.action.canceled += LeftFlipperReleased;
         RFlipper.action.canceled += RightFlipperReleased;
@@ -73,7 +75,7 @@ public class PinballController : MonoBehaviour
 
         LFlipper.action.performed -= LeftFlipper;
         RFlipper.action.performed -= RightFlipper;
-        Plunger.action.performed -= Launch;
+        Plunger.action.performed -= PrepareLaunch;
 
         LFlipper.action.canceled -= LeftFlipperReleased;
         RFlipper.action.canceled -= RightFlipperReleased;
@@ -100,13 +102,13 @@ public class PinballController : MonoBehaviour
         leftFlipperPressed = false;
     }
 
-    public void Launch(InputAction.CallbackContext context)
+    public void PrepareLaunch(InputAction.CallbackContext context)
     {
-
+        
     }
 
     public void LaunchReleased(InputAction.CallbackContext context)
     {
-
+        
     }
 }

@@ -1,5 +1,4 @@
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Player Settings")]
     [SerializeField] private float _moveSpeed = 3.0f;
+    private bool _isMovementLocked = false;
 
     private Vector2 _moveInput;
 
@@ -46,24 +46,33 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle player movement
-        if (_moveInput.magnitude >= 0.1f)
+        if (!_isMovementLocked && _moveInput.magnitude >= 0.1f)
         {
             Vector3 movement = (transform.right * _moveInput.x) + (transform.forward * _moveInput.y);
             cc.Move(_moveSpeed * Time.deltaTime * movement);
         }
     }
 
-    private void SwitchCameras()
+    public void SwitchCameras()
     {
+        ToggleMovementLock();
+
         if (!_isZoomed)
         {
+            _zoomCamera.gameObject.SetActive(true);
             _zoomCamera.Prioritize();
         }
         else
         {
+            _zoomCamera.gameObject.SetActive(false);
             _FPCamera.Prioritize();
         }
 
         _isZoomed = !_isZoomed;
+    }
+
+    public void ToggleMovementLock()
+    {
+        _isMovementLocked = !_isMovementLocked;
     }
 }
