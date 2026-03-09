@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,6 +18,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CinemachineCamera _zoomCamera;
     private bool _isZoomed = false;
 
+    [Header("HUD Settings")]
+    [SerializeField] private Canvas _hudCanvas;
+    [SerializeField] private TMP_Text _interactionText;
+
+    [Header("Interaction Prompts")]
+    [SerializeField] private string _pinballInteractionText;
+    [SerializeField] private string _bedInteractionText;
+    [SerializeField] private string _lightSwitchInteractionText;
+
     void Start()
     {
         cc = GetComponent<CharacterController>();
@@ -27,11 +37,6 @@ public class PlayerController : MonoBehaviour
     void OnMove(InputValue movementValue)
     {
         _moveInput = movementValue.Get<Vector2>().normalized;
-    }
-
-    void OnInteract()
-    {
-        SwitchCameras();
     }
 
     void Update()
@@ -69,6 +74,26 @@ public class PlayerController : MonoBehaviour
         }
 
         _isZoomed = !_isZoomed;
+    }
+
+    public void ShowPinballInteractionPrompt()
+    {
+        _interactionText.text = _pinballInteractionText;
+    }
+
+    public void ShowBedInteractionText()
+    {
+        _interactionText.text = _bedInteractionText;
+    }
+
+    public void ShowLightSwitchInteractionText()
+    {
+        _interactionText.text = _lightSwitchInteractionText;
+    }
+
+    public void ClearInteractionText()
+    {
+        _interactionText.text = "";
     }
 
     public void ToggleMovementLock()
